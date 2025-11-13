@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DBMS Project Demo Guide</title>
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .container {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        h1 {
+            color: #667eea;
+            text-align: center;
+            font-size: 36px;
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 18px;
+        }
+        .progress-bar {
+            background: #e0e0e0;
+            height: 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            height: 100%;
+            transition: width 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+        .step {
+            border: 3px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 20px;
+            transition: all 0.3s;
+        }
+        .step.active {
+            border-color: #667eea;
+            background: #f8f9ff;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
+        }
+        .step.completed {
+            border-color: #4CAF50;
+            background: #f1f8f4;
+        }
+        .step-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            cursor: pointer;
+        }
+        .step-number {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: #667eea;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 20px;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+        .step.completed .step-number {
+            background: #4CAF50;
+        }
+        .step-title {
+            font-size: 22px;
+            font-weight: bold;
+            color: #333;
+            flex-grow: 1;
+        }
+        .step-content {
+            display: none;
+            margin-left: 65px;
+        }
+        .step.active .step-content {
+            display: block;
+        }
+        .what-to-say {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+        .what-to-say h4 {
+            margin: 0 0 10px 0;
+            color: #856404;
+        }
+        .action-box {
+            background: #d1ecf1;
+            border-left: 4px solid #17a2b8;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+        .action-box h4 {
+            margin: 0 0 10px 0;
+            color: #0c5460;
+        }
+        .technical-term {
+            background: #e7f3ff;
+            border-left: 4px solid #2196F3;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+        .technical-term h4 {
+            margin: 0 0 10px 0;
+            color: #0d47a1;
+        }
+        button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            margin: 10px 5px;
+            transition: all 0.3s;
+        }
+        button:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        button.secondary {
+            background: #6c757d;
+        }
+        button.secondary:hover {
+            background: #5a6268;
+        }
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin: 20px 0;
+        }
+        .checklist {
+            list-style: none;
+            padding: 0;
+        }
+        .checklist li {
+            padding: 10px;
+            margin: 5px 0;
+            background: #f8f9fa;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+        }
+        .checklist li:before {
+            content: '[ ]';
+            font-size: 24px;
+            margin-right: 10px;
+            color: #999;
+        }
+        .checklist li.checked:before {
+            content: '[X]';
+            color: #4CAF50;
+        }
+        .timer {
+            text-align: center;
+            font-size: 48px;
+            font-weight: bold;
+            color: #667eea;
+            margin: 20px 0;
+        }
+        .tip {
+            background: #d4edda;
+            border-left: 4px solid #28a745;
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Complete Demo Guide</h1>
+        <p class="subtitle">Follow this step-by-step to demonstrate ALL project features (Estimated time: 10-12 minutes)</p>
+        
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressBar">0% Complete</div>
+        </div>
+
+        <!-- STEP 1: INTRODUCTION -->
+        <div class="step active" id="step1">
+            <div class="step-header" onclick="toggleStep(1)">
+                <div class="step-number">1</div>
+                <div class="step-title">Introduction & Setup (1 minute)</div>
+            </div>
+            <div class="step-content">
+                <div class="what-to-say">
+                    <h4>What to Say:</h4>
+                    <p><strong>"Hello! Today I'll demonstrate my DBMS project - a Food Delivery System. This is a complete database application with a frontend website, backend API, and a database with 5 tables, 4 triggers, and complex queries."</strong></p>
+                </div>
+
+                <div class="technical-term">
+                    <h4>Key Terms to Remember:</h4>
+                    <ul>
+                        <li><strong>DBMS</strong> = Database Management System (stores and organizes data)</li>
+                        <li><strong>Frontend</strong> = The website users see</li>
+                        <li><strong>Backend</strong> = The program that handles data</li>
+                        <li><strong>API</strong> = How frontend talks to backend</li>
+                    </ul>
+                </div>
+
+                <div class="action-box">
+                    <h4>Preparation Checklist:</h4>
+                    <ul class="checklist">
+                        <li onclick="this.classList.toggle('checked')">Backend server is running (Flask on port 5000)</li>
+                        <li onclick="this.classList.toggle('checked')">Frontend is running (React on port 3001)</li>
+                        <li onclick="this.classList.toggle('checked')">demo.html is open in browser</li>
+                        <li onclick="this.classList.toggle('checked')">VS Code is open showing project files</li>
+                    </ul>
+                </div>
+
+                <div class="button-group">
+                    <button onclick="completeStep(1)">Ready - Start Demo</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- STEP 2: DATABASE DESIGN -->
+        <div class="step" id="step2">
+            <div class="step-header" onclick="toggleStep(2)">
+                <div class="step-number">2</div>
+                <div class="step-title">Database Design - ER Diagram & Schema (2 minutes)</div>
+            </div>
+            <div class="step-content">
+                <div class="what-to-say">
+                    <h4>What to Say:</h4>
+                    <p><strong>"Let me show you the database design first. I have 5 tables that store all the data."</strong></p>
+                </div>
+
+                <div class="action-box">
+                    <h4>Actions to Perform:</h4>
+                    <ol>
+                        <li><strong>Open:</strong> <code>docs/ER_Diagram.md</code> in VS Code</li>
+                        <li><strong>Scroll to:</strong> ASCII diagram section</li>
+                        <li><strong>Point out:</strong> "Here are my 5 tables - users, restaurants, menu_items, orders, and order_items"</li>
+                        <li><strong>Explain:</strong> "The arrows show relationships - one user can have many orders, one restaurant can have many menu items"</li>
+                    </ol>
+                </div>
+
+                <div class="what-to-say">
+                    <h4>What to Say Next:</h4>
+                    <p><strong>"Now let me show you the actual database schema with all constraints."</strong></p>
+                </div>
+
+                <div class="action-box">
+                    <h4>Actions:</h4>
+                    <ol>
+                        <li><strong>Open:</strong> <code>sql/schema.sql</code></li>
+                        <li><strong>Scroll through tables, point out:</strong>
+                            <ul>
+                                <li>"PRIMARY KEY" - unique identifier for each row</li>
+                                <li>"FOREIGN KEY" - links between tables</li>
+                                <li>"CHECK(price > 0)" - validation constraint</li>
+                                <li>"NOT NULL" - required fields</li>
+                            </ul>
+                        </li>
+                    </ol>
+                </div>
+
+                <div class="tip">
+                    <strong>Tip:</strong> If professor asks "What is normalization?" say: "My tables are normalized to 3rd Normal Form - no redundant data, each table has a single purpose."
+                </div>
+
+                <div class="button-group">
+                    <button onclick="completeStep(2)">Explained Database Design</button>
+                    <button class="secondary" onclick="goToStep(1)">← Back</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- STEP 3: TRIGGERS -->
+        <div class="step" id="step3">
+            <div class="step-header" onclick="toggleStep(3)">
+                <div class="step-number">3</div>
+                <div class="step-title">Show 4 Triggers (Automatic Actions) (2 minutes)</div>
+            </div>
+            <div class="step-content">
+                <div class="technical-term">
+                    <h4>What is a Trigger?</h4>
+                    <p><strong>Simple explanation:</strong> "A trigger is like a motion sensor light - it automatically does something when an event happens. In my database, when someone places an order, the restaurant's order count automatically increases."</p>
+                </div>
+
+                <div class="action-box">
+                    <h4>Show the Triggers in Code:</h4>
+                    <ol>
+                        <li><strong>In schema.sql,</strong> scroll to bottom where triggers are</li>
+                        <li><strong>Point to each trigger:</strong></li>
+                    </ol>
+                </div>
+
+                <div class="what-to-say">
+                    <h4>Explain Each Trigger:</h4>
+                    <p><strong>Trigger 1 - increment_order_count:</strong><br>"When a new order is placed, this automatically adds 1 to the restaurant's order count."</p>
+                    
+                    <p><strong>Trigger 2 - prevent_restaurant_delete:</strong><br>"This prevents deleting a restaurant if it has active orders - data safety."</p>
+                    
+                    <p><strong>Trigger 3 - update_order_total:</strong><br>"Automatically recalculates the order total when items are added."</p>
+                    
+                    <p><strong>Trigger 4 - log_order_status_change:</strong><br>"Records every status change for audit trail - like a security log."</p>
+                </div>
+
+                <div class="action-box">
+                    <h4>Now DEMONSTRATE Trigger 1 in Action:</h4>
+                    <ol>
+                        <li><strong>Open:</strong> demo.html in browser</li>
+                        <li><strong>Click:</strong> "Test Endpoint" under GET /api/restaurants</li>
+                        <li><strong>Say:</strong> "Look at Pizza Palace - order_count is currently <span style="color: red;">[read the number]</span>"</li>
+                        <li><strong>Scroll to:</strong> POST /api/orders section</li>
+                        <li><strong>Click:</strong> "Test Endpoint" to place an order</li>
+                        <li><strong>Say:</strong> "Order created successfully!"</li>
+                        <li><strong>Scroll back up</strong> to GET /api/restaurants</li>
+                        <li><strong>Click:</strong> "Test Endpoint" again</li>
+                        <li><strong>Say:</strong> "See! The order_count increased by 1 automatically - that's the trigger working!"</li>
+                    </ol>
+                </div>
+
+                <div class="tip">
+                    <strong>Important:</strong> This is one of the most impressive parts! Make sure to clearly show the number before and after.
+                </div>
+
+                <div class="button-group">
+                    <button onclick="completeStep(3)">Demonstrated Triggers</button>
+                    <button class="secondary" onclick="goToStep(2)">← Back</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- STEP 4: CRUD OPERATIONS -->
+        <div class="step" id="step4">
+            <div class="step-header" onclick="toggleStep(4)">
+                <div class="step-number">4</div>
+                <div class="step-title">CRUD Operations (Create, Read, Update, Delete) (3 minutes)</div>
+            </div>
+            <div class="step-content">
+                <div class="technical-term">
+                    <h4>What is CRUD?</h4>
+                    <p><strong>Simple explanation:</strong> "CRUD stands for Create, Read, Update, Delete - the 4 basic things you can do with data. Like managing your phone contacts - add new contact (Create), view contacts (Read), change a number (Update), remove contact (Delete)."</p>
+                </div>
+
+                <div class="action-box">
+                    <h4>Demonstrate CREATE (Adding Data):</h4>
+                    <ol>
+                        <li><strong>In demo.html,</strong> scroll to POST /api/register</li>
+                        <li><strong>Say:</strong> "Let me register a new user - this is CREATE operation"</li>
+                        <li><strong>Change email to:</strong> testuser<span id="randomNum"></span>@demo.com (avoid duplicates)</li>
+                        <li><strong>Click:</strong> "Test Endpoint"</li>
+                        <li><strong>Say:</strong> "User created successfully! Notice it returned a user ID - that's proof it was saved in the database."</li>
+                    </ol>
+                </div>
+
+                <div class="action-box">
+                    <h4>Demonstrate READ (Viewing Data):</h4>
+                    <ol>
+                        <li><strong>Scroll to:</strong> GET /api/restaurants</li>
+                        <li><strong>Say:</strong> "This is READ operation - fetching data from the database"</li>
+                        <li><strong>Click:</strong> "Test Endpoint"</li>
+                        <li><strong>Say:</strong> "See all the restaurant data displayed"</li>
+                        <li><strong>Scroll to:</strong> GET /api/menu/1</li>
+                        <li><strong>Click:</strong> "Test Endpoint"</li>
+                        <li><strong>Say:</strong> "This shows all menu items for Pizza Palace"</li>
+                    </ol>
+                </div>
+
+                <div class="action-box">
+                    <h4>Demonstrate UPDATE (Modifying Data):</h4>
+                    <ol>
+                        <li><strong>Scroll to:</strong> PUT /api/orders/:order_id/status</li>
+                        <li><strong>Say:</strong> "Now UPDATE operation - changing existing data"</li>
+                        <li><strong>Change status to:</strong> "delivered"</li>
+                        <li><strong>Click:</strong> "Test Endpoint"</li>
+                        <li><strong>Say:</strong> "Order status updated from pending to delivered!"</li>
+                    </ol>
+                </div>
+
+                <div class="action-box">
+                    <h4>Demonstrate DELETE (Removing Data):</h4>
+                    <ol>
+                        <li><strong>Scroll to:</strong> DELETE /api/menu/:item_id</li>
+                        <li><strong>Say:</strong> "Finally, DELETE operation - removing data"</li>
+                        <li><strong>Set item ID to:</strong> 4 (Garlic Bread)</li>
+                        <li><strong>Click:</strong> "Test Endpoint"</li>
+                        <li><strong>Confirm:</strong> when dialog appears</li>
+                        <li><strong>Say:</strong> "Menu item deleted! Notice it checks if the item is used in orders before allowing deletion - that's data integrity."</li>
+                    </ol>
+                </div>
+
+                <div class="what-to-say">
+                    <h4>Summary Statement:</h4>
+                    <p><strong>"So that's all 4 CRUD operations - Create new users, Read restaurant data, Update order status, and Delete menu items. My API has full data manipulation capabilities."</strong></p>
+                </div>
+
+                <div class="button-group">
+                    <button onclick="completeStep(4)">Demonstrated All CRUD Operations</button>
+                    <button class="secondary" onclick="goToStep(3)">← Back</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- STEP 5: COMPLEX QUERIES -->
+        <div class="step" id="step5">
+            <div class="step-header" onclick="toggleStep(5)">
+                <div class="step-number">5</div>
+                <div class="step-title">Complex Queries & Analytics (2 minutes)</div>
+            </div>
+            <div class="step-content">
+                <div class="technical-term">
+                    <h4>What are Complex Queries?</h4>
+                    <p><strong>Simple explanation:</strong> "Instead of simple questions like 'What's the price?', complex queries ask things like 'Which restaurant made the most money from customers who ordered more than 3 times?' - they combine data from multiple tables with calculations."</p>
+                </div>
+
+                <div class="action-box">
+                    <h4>Show Complex Queries in Code:</h4>
+                    <ol>
+                        <li><strong>Open:</strong> sql/procedures_functions.sql in VS Code</li>
+                        <li><strong>Scroll to:</strong> "COMPLEX QUERY 1: Restaurant Performance Dashboard"</li>
+                        <li><strong>Say:</strong> "This query combines data from 3 tables - restaurants, orders, and menu_items"</li>
+                        <li><strong>Point out:</strong>
+                            <ul>
+                                <li>LEFT JOIN - combining tables</li>
+                                <li>COUNT, SUM, AVG - calculations</li>
+                                <li>GROUP BY - organizing data</li>
+                                <li>Subquery (SELECT inside SELECT)</li>
+                            </ul>
+                        </li>
+                    </ol>
+                </div>
+
+                <div class="action-box">
+                    <h4>Demonstrate Analytics Dashboard:</h4>
+                    <ol>
+                        <li><strong>Switch to:</strong> demo.html</li>
+                        <li><strong>Scroll to:</strong> GET /api/analytics/dashboard</li>
+                        <li><strong>Say:</strong> "Let me run the analytics dashboard - this executes multiple complex queries"</li>
+                        <li><strong>Click:</strong> "Test Endpoint"</li>
+                        <li><strong>Point out results:</strong>
+                            <ul>
+                                <li>"Restaurant performance with revenue calculations"</li>
+                                <li>"Top selling menu items"</li>
+                                <li>"Customer lifetime value rankings"</li>
+                            </ul>
+                        </li>
+                    </ol>
+                </div>
+
+                <div class="what-to-say">
+                    <h4>Explain the Other Complex Queries:</h4>
+                    <p><strong>"I have 4 complex queries in total:</strong></p>
+                    <ol>
+                        <li><strong>Restaurant Performance</strong> - revenue, orders, customers (you just saw this)</li>
+                        <li><strong>Daily Sales Report</strong> - sales broken down by date with comparisons</li>
+                        <li><strong>Customer Segmentation</strong> - groups customers as High/Medium/Low value based on spending</li>
+                        <li><strong>Market Basket Analysis</strong> - finds items frequently bought together (like 'pizza with soda')"</li>
+                    </ol>
+                </div>
+
+                <div class="button-group">
+                    <button onclick="completeStep(5)">Showed Complex Queries</button>
+                    <button class="secondary" onclick="goToStep(4)">← Back</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- STEP 6: PROCEDURES & FUNCTIONS -->
+        <div class="step" id="step6">
+            <div class="step-header" onclick="toggleStep(6)">
+                <div class="step-number">6</div>
+                <div class="step-title">Stored Procedures & Functions (1 minute)</div>
+            </div>
+            <div class="step-content">
+                <div class="technical-term">
+                    <h4>What are Procedures & Functions?</h4>
+                    <p><strong>Stored Procedure:</strong> Like a recipe saved in the database - a set of SQL commands that execute together</p>
+                    <p><strong>Function:</strong> Like a calculator button - give it input, get a result</p>
+                </div>
+
+                <div class="action-box">
+                    <h4>Show in Code:</h4>
+                    <ol>
+                        <li><strong>In procedures_functions.sql,</strong> scroll to top</li>
+                        <li><strong>Say:</strong> "I have 4 stored procedures and 4 functions documented here"</li>
+                        <li><strong>Quickly mention each:</strong></li>
+                    </ol>
+                </div>
+
+                <div class="what-to-say">
+                    <h4>List Them Out:</h4>
+                    <p><strong>4 Stored Procedures:</strong></p>
+                    <ol>
+                        <li>Calculate Restaurant Revenue (with date filtering)</li>
+                        <li>Get Top Selling Items (finds bestsellers)</li>
+                        <li>Update Order Status (with validation)</li>
+                        <li>Get Customer Order History (complete details)</li>
+                    </ol>
+                    
+                    <p><strong>4 Functions:</strong></p>
+                    <ol>
+                        <li>Calculate User Lifetime Value (total spending)</li>
+                        <li>Get Available Menu Items (only in-stock items)</li>
+                        <li>Calculate Order Item Count (items in cart)</li>
+                        <li>Check Restaurant Availability (has items or not)</li>
+                    </ol>
+                </div>
+
+                <div class="tip">
+                    <strong>Note:</strong> SQLite doesn't support stored procedures natively, so these are implemented in the application layer (backend/app.py). This is documented in the SQL file.
+                </div>
+
+                <div class="button-group">
+                    <button onclick="completeStep(6)">Explained Procedures & Functions</button>
+                    <button class="secondary" onclick="goToStep(5)">← Back</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- STEP 7: FRONTEND DEMO -->
+        <div class="step" id="step7">
+            <div class="step-header" onclick="toggleStep(7)">
+                <div class="step-number">7</div>
+                <div class="step-title">Frontend Application Demo (2 minutes)</div>
+            </div>
+            <div class="step-content">
+                <div class="what-to-say">
+                    <h4>What to Say:</h4>
+                    <p><strong>"Now let me show you the complete application from a user's perspective."</strong></p>
+                </div>
+
+                <div class="action-box">
+                    <h4>Actions to Perform:</h4>
+                    <ol>
+                        <li><strong>Open browser to:</strong> http://localhost:3001</li>
+                        <li><strong>Say:</strong> "This is the React frontend - what users actually see"</li>
+                        <li><strong>Point out:</strong> "Two restaurants are shown"</li>
+                        <li><strong>Click:</strong> "View Menu" on Pizza Palace</li>
+                        <li><strong>Say:</strong> "Now I can see all menu items with prices"</li>
+                        <li><strong>Click:</strong> "Add to Cart" on Margherita Pizza</li>
+                        <li><strong>Point to cart sidebar:</strong> "Item added! See the cart on the right"</li>
+                        <li><strong>Click + button</strong> to increase quantity</li>
+                        <li><strong>Say:</strong> "Quantity increased, total updates automatically"</li>
+                        <li><strong>Add 2-3 more items</strong> to cart</li>
+                        <li><strong>Click:</strong> "Checkout" button</li>
+                        <li><strong>Point to success message:</strong> "Order placed! See the order ID and total"</li>
+                        <li><strong>Say:</strong> "This entire transaction was saved to the database, and the trigger we saw earlier incremented the restaurant's order count"</li>
+                    </ol>
+                </div>
+
+                <div class="tip">
+                    <strong>Tip:</strong> If the success message doesn't show, refresh the page and make sure backend is running.
+                </div>
+
+                <div class="button-group">
+                    <button onclick="completeStep(7)">Demonstrated Frontend</button>
+                    <button class="secondary" onclick="goToStep(6)">← Back</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- STEP 8: CONCLUSION -->
+        <div class="step" id="step8">
+            <div class="step-header" onclick="toggleStep(8)">
+                <div class="step-number">8</div>
+                <div class="step-title">🎯 Summary & Questions (1 minute)</div>
+            </div>
+            <div class="step-content">
+                <div class="what-to-say">
+                    <h4>Closing Statement:</h4>
+                    <p><strong>"To summarize, I've built a complete database application with:</strong></p>
+                    <ul>
+                        <li><strong>5 tables</strong> in a normalized relational database</li>
+                        <li><strong>4 triggers</strong> for automatic actions</li>
+                        <li><strong>Full CRUD operations</strong> - Create, Read, Update, Delete</li>
+                        <li><strong>4 stored procedures</strong> for business logic</li>
+                        <li><strong>4 functions</strong> for reusable calculations</li>
+                        <li><strong>4 complex queries</strong> with joins, subqueries, and aggregations</li>
+                        <li><strong>REST API backend</strong> with 10 endpoints</li>
+                        <li><strong>React frontend</strong> for user interaction</li>
+                        <li><strong>Complete documentation</strong> including ER diagram, requirements spec, and technical docs</li>
+                    </ul>
+                    <p><strong>"The application is fully functional, deployable, and demonstrates all database concepts required. I'm ready for any questions!"</strong></p>
+                </div>
+
+                <div class="technical-term">
+                    <h4>Be Ready to Answer:</h4>
+                    <ul>
+                        <li><strong>Q: "What is normalization?"</strong><br>
+                        A: "My database is in 3rd Normal Form - no redundant data, each table serves a single purpose, and all data dependencies are resolved."</li>
+                        
+                        <li><strong>Q: "Why SQLite instead of MySQL?"</strong><br>
+                        A: "SQLite is perfect for development and prototyping. For production, the schema can easily be migrated to MySQL or PostgreSQL - the SQL syntax is almost identical."</li>
+                        
+                        <li><strong>Q: "What about security?"</strong><br>
+                        A: "Current version has input validation and CORS protection. For production, I would add: user authentication, password hashing, JWT tokens, and SQL injection prevention (already using parameterized queries)."</li>
+                        
+                        <li><strong>Q: "What was the most challenging part?"</strong><br>
+                        A: "Designing the triggers to maintain data consistency automatically, especially the order total calculation and audit logging."</li>
+                    </ul>
+                </div>
+
+                <div class="action-box">
+                    <h4>Files to Have Open (if professor wants to see):</h4>
+                    <ul class="checklist">
+                        <li onclick="this.classList.toggle('checked')">sql/schema.sql (tables & triggers)</li>
+                        <li onclick="this.classList.toggle('checked')">sql/procedures_functions.sql (procedures & queries)</li>
+                        <li onclick="this.classList.toggle('checked')">backend/app.py (API endpoints)</li>
+                        <li onclick="this.classList.toggle('checked')">docs/ER_Diagram.md (database design)</li>
+                        <li onclick="this.classList.toggle('checked')">PROJECT_SUMMARY.md (complete requirements checklist)</li>
+                    </ul>
+                </div>
+
+                <div class="button-group">
+                    <button onclick="completeStep(8)" style="background: #4CAF50;">🎉 Demo Complete!</button>
+                    <button class="secondary" onclick="goToStep(1)">↻ Start Over</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        let currentStep = 1;
+        let completedSteps = 0;
+
+        // Generate random number for email
+        document.getElementById('randomNum').textContent = Math.floor(Math.random() * 1000);
+
+        function toggleStep(stepNum) {
+            const step = document.getElementById('step' + stepNum);
+            if (step.classList.contains('active')) {
+                return; // Don't close active step
+            }
+            
+            // Close all steps
+            document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+            
+            // Open clicked step
+            step.classList.add('active');
+            currentStep = stepNum;
+            
+            // Scroll to step
+            step.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        function completeStep(stepNum) {
+            const step = document.getElementById('step' + stepNum);
+            step.classList.add('completed');
+            step.classList.remove('active');
+            
+            completedSteps++;
+            updateProgress();
+            
+            // Open next step if available
+            if (stepNum < 8) {
+                goToStep(stepNum + 1);
+            }
+        }
+
+        function goToStep(stepNum) {
+            currentStep = stepNum;
+            toggleStep(stepNum);
+        }
+
+        function updateProgress() {
+            const percentage = (completedSteps / 8) * 100;
+            const progressBar = document.getElementById('progressBar');
+            progressBar.style.width = percentage + '%';
+            progressBar.textContent = Math.round(percentage) + '% Complete';
+            
+            if (completedSteps === 8) {
+                progressBar.textContent = '🎉 Demo Complete!';
+            }
+        }
+
+        // Add click handlers to checklist items
+        document.addEventListener('DOMContentLoaded', function() {
+            const checklistItems = document.querySelectorAll('.checklist li');
+            checklistItems.forEach(item => {
+                item.style.cursor = 'pointer';
+            });
+        });
+    </script>
+</body>
+</html>

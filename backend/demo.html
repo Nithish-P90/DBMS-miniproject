@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food Delivery API Demo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        h1 { color: #FF6B35; }
+        h2 { color: #333; border-bottom: 2px solid #FF6B35; padding-bottom: 10px; }
+        .endpoint {
+            background: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .endpoint h3 {
+            margin-top: 0;
+            color: #FF6B35;
+        }
+        button {
+            background-color: #FF6B35;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            margin: 5px 5px 5px 0;
+        }
+        button:hover {
+            background-color: #e55a2b;
+        }
+        .output {
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin-top: 10px;
+            border-radius: 5px;
+            white-space: pre-wrap;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .method {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 3px;
+            font-weight: bold;
+            margin-right: 10px;
+            font-size: 12px;
+        }
+        .get { background-color: #61affe; color: white; }
+        .post { background-color: #49cc90; color: white; }
+        input, textarea {
+            width: 100%;
+            padding: 8px;
+            margin: 5px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        textarea {
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+        }
+        .success { color: #4CAF50; font-weight: bold; }
+        .error { color: #f44336; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h1>Food Delivery API Demo</h1>
+    <p>This page demonstrates all backend API endpoints with live testing functionality.</p>
+
+    <!-- GET Restaurants -->
+    <div class="endpoint">
+        <h3><span class="method get">GET</span> /api/restaurants</h3>
+        <p>Retrieve all available restaurants.</p>
+        <button onclick="getRestaurants()">Test Endpoint</button>
+        <div id="restaurants-output" class="output"></div>
+    </div>
+
+    <!-- GET Menu -->
+    <div class="endpoint">
+        <h3><span class="method get">GET</span> /api/menu/:restaurant_id</h3>
+        <p>Get menu items for a specific restaurant.</p>
+        <label>Restaurant ID: <input type="number" id="menu-restaurant-id" value="1" style="width: 100px;"></label>
+        <button onclick="getMenu()">Test Endpoint</button>
+        <div id="menu-output" class="output"></div>
+    </div>
+
+    <!-- POST Register -->
+    <div class="endpoint">
+        <h3><span class="method post">POST</span> /api/register</h3>
+        <p>Register a new user.</p>
+        <label>Name: <input type="text" id="reg-name" value="John Doe"></label>
+        <label>Email: <input type="email" id="reg-email" value="john@example.com"></label>
+        <label>Phone: <input type="text" id="reg-phone" value="555-1234"></label>
+        <button onclick="registerUser()">Test Endpoint</button>
+        <div id="register-output" class="output"></div>
+    </div>
+
+    <!-- POST Order -->
+    <div class="endpoint">
+        <h3><span class="method post">POST</span> /api/orders</h3>
+        <p>Place a new order with items.</p>
+        <label>User ID: <input type="number" id="order-user-id" value="1" style="width: 100px;"></label>
+        <label>Restaurant ID: <input type="number" id="order-restaurant-id" value="1" style="width: 100px;"></label>
+        <label>Order JSON:</label>
+        <textarea id="order-json" rows="6">{
+  "user_id": 1,
+  "restaurant_id": 1,
+  "items": [
+    {"item_id": 1, "quantity": 2},
+    {"item_id": 3, "quantity": 1}
+  ]
+}</textarea>
+        <button onclick="placeOrder()">Test Endpoint</button>
+        <div id="order-output" class="output"></div>
+    </div>
+
+    <!-- GET User Orders -->
+    <div class="endpoint">
+        <h3><span class="method get">GET</span> /api/orders/:user_id</h3>
+        <p>Retrieve all orders for a specific user.</p>
+        <label>User ID: <input type="number" id="user-orders-id" value="1" style="width: 100px;"></label>
+        <button onclick="getUserOrders()">Test Endpoint</button>
+        <div id="user-orders-output" class="output"></div>
+    </div>
+
+    <!-- PUT Update Order Status -->
+    <div class="endpoint">
+        <h3><span class="method post">PUT</span> /api/orders/:order_id/status</h3>
+        <p>Update order status (UPDATE operation).</p>
+        <label>Order ID: <input type="number" id="update-order-id" value="1" style="width: 100px;"></label>
+        <label>New Status: 
+            <select id="update-status" style="padding: 8px;">
+                <option value="pending">Pending</option>
+                <option value="confirmed">Confirmed</option>
+                <option value="delivered">Delivered</option>
+                <option value="cancelled">Cancelled</option>
+            </select>
+        </label>
+        <button onclick="updateOrderStatus()">Test Endpoint</button>
+        <div id="update-order-output" class="output"></div>
+    </div>
+
+    <!-- PUT Update Menu Item -->
+    <div class="endpoint">
+        <h3><span class="method post">PUT</span> /api/menu/:item_id</h3>
+        <p>Update menu item details (UPDATE operation).</p>
+        <label>Item ID: <input type="number" id="update-item-id" value="1" style="width: 100px;"></label>
+        <label>Price: <input type="number" id="update-item-price" value="15.99" step="0.01" style="width: 120px;"></label>
+        <label>Available: 
+            <select id="update-item-available" style="padding: 8px;">
+                <option value="1">Yes</option>
+                <option value="0">No</option>
+            </select>
+        </label>
+        <button onclick="updateMenuItem()">Test Endpoint</button>
+        <div id="update-item-output" class="output"></div>
+    </div>
+
+    <!-- DELETE Menu Item -->
+    <div class="endpoint">
+        <h3><span class="method post" style="background-color: #f93e3e;">DELETE</span> /api/menu/:item_id</h3>
+        <p>Delete a menu item (DELETE operation).</p>
+        <label>Item ID: <input type="number" id="delete-item-id" value="4" style="width: 100px;"></label>
+        <button onclick="deleteMenuItem()" style="background-color: #f93e3e;">Test Endpoint</button>
+        <div id="delete-item-output" class="output"></div>
+    </div>
+
+    <!-- DELETE Cancel Order -->
+    <div class="endpoint">
+        <h3><span class="method post" style="background-color: #f93e3e;">DELETE</span> /api/orders/:order_id</h3>
+        <p>Cancel an order (DELETE operation - soft delete).</p>
+        <label>Order ID: <input type="number" id="cancel-order-id" value="1" style="width: 100px;"></label>
+        <button onclick="cancelOrder()" style="background-color: #f93e3e;">Test Endpoint</button>
+        <div id="cancel-order-output" class="output"></div>
+    </div>
+
+    <!-- Analytics Dashboard -->
+    <div class="endpoint">
+        <h3><span class="method get">GET</span> /api/analytics/dashboard</h3>
+        <p>Get comprehensive analytics and insights (Complex Queries).</p>
+        <button onclick="getAnalytics()">Test Endpoint</button>
+        <div id="analytics-output" class="output"></div>
+    </div>
+
+    <!-- Trigger Demo -->
+    <div class="endpoint">
+        <h3>SQL Triggers Demo (4 Triggers)</h3>
+        <p>The database has multiple triggers:</p>
+        <ol>
+            <li><strong>increment_order_count:</strong> Auto-increments restaurant order_count when order is placed</li>
+            <li><strong>prevent_restaurant_delete:</strong> Prevents deleting restaurants with active orders</li>
+            <li><strong>update_order_total:</strong> Auto-updates order total when items change</li>
+            <li><strong>log_order_status_change:</strong> Logs status changes for audit trail</li>
+        </ol>
+        <p><strong>Test:</strong> Place an order, then check restaurants list to see order_count increment!</p>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:5000/api';
+
+        function displayOutput(elementId, data, isError = false) {
+            const element = document.getElementById(elementId);
+            if (isError) {
+                element.innerHTML = `<span class="error">ERROR:</span>\n${JSON.stringify(data, null, 2)}`;
+            } else {
+                element.innerHTML = `<span class="success">SUCCESS:</span>\n${JSON.stringify(data, null, 2)}`;
+            }
+        }
+
+        async function getRestaurants() {
+            try {
+                const response = await fetch(`${API_BASE}/restaurants`);
+                const data = await response.json();
+                displayOutput('restaurants-output', data);
+            } catch (error) {
+                displayOutput('restaurants-output', {error: error.message}, true);
+            }
+        }
+
+        async function getMenu() {
+            try {
+                const restaurantId = document.getElementById('menu-restaurant-id').value;
+                const response = await fetch(`${API_BASE}/menu/${restaurantId}`);
+                const data = await response.json();
+                displayOutput('menu-output', data);
+            } catch (error) {
+                displayOutput('menu-output', {error: error.message}, true);
+            }
+        }
+
+        async function registerUser() {
+            try {
+                const userData = {
+                    name: document.getElementById('reg-name').value,
+                    email: document.getElementById('reg-email').value,
+                    phone: document.getElementById('reg-phone').value
+                };
+                const response = await fetch(`${API_BASE}/register`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(userData)
+                });
+                const data = await response.json();
+                if (response.ok) {
+                    displayOutput('register-output', data);
+                } else {
+                    displayOutput('register-output', data, true);
+                }
+            } catch (error) {
+                displayOutput('register-output', {error: error.message}, true);
+            }
+        }
+
+        async function placeOrder() {
+            try {
+                const orderData = JSON.parse(document.getElementById('order-json').value);
+                const response = await fetch(`${API_BASE}/orders`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(orderData)
+                });
+                const data = await response.json();
+                if (response.ok) {
+                    displayOutput('order-output', data);
+                } else {
+                    displayOutput('order-output', data, true);
+                }
+            } catch (error) {
+                displayOutput('order-output', {error: error.message}, true);
+            }
+        }
+
+        async function getUserOrders() {
+            try {
+                const userId = document.getElementById('user-orders-id').value;
+                const response = await fetch(`${API_BASE}/orders/${userId}`);
+                const data = await response.json();
+                displayOutput('user-orders-output', data);
+            } catch (error) {
+                displayOutput('user-orders-output', {error: error.message}, true);
+            }
+        }
+
+        async function updateOrderStatus() {
+            try {
+                const orderId = document.getElementById('update-order-id').value;
+                const status = document.getElementById('update-status').value;
+                const response = await fetch(`${API_BASE}/orders/${orderId}/status`, {
+                    method: 'PUT',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({status: status})
+                });
+                const data = await response.json();
+                if (response.ok) {
+                    displayOutput('update-order-output', data);
+                } else {
+                    displayOutput('update-order-output', data, true);
+                }
+            } catch (error) {
+                displayOutput('update-order-output', {error: error.message}, true);
+            }
+        }
+
+        async function updateMenuItem() {
+            try {
+                const itemId = document.getElementById('update-item-id').value;
+                const price = parseFloat(document.getElementById('update-item-price').value);
+                const available = parseInt(document.getElementById('update-item-available').value);
+                const response = await fetch(`${API_BASE}/menu/${itemId}`, {
+                    method: 'PUT',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({price: price, available: available})
+                });
+                const data = await response.json();
+                if (response.ok) {
+                    displayOutput('update-item-output', data);
+                } else {
+                    displayOutput('update-item-output', data, true);
+                }
+            } catch (error) {
+                displayOutput('update-item-output', {error: error.message}, true);
+            }
+        }
+
+        async function deleteMenuItem() {
+            try {
+                const itemId = document.getElementById('delete-item-id').value;
+                if (!confirm(`Are you sure you want to delete menu item #${itemId}?`)) {
+                    return;
+                }
+                const response = await fetch(`${API_BASE}/menu/${itemId}`, {
+                    method: 'DELETE'
+                });
+                const data = await response.json();
+                if (response.ok) {
+                    displayOutput('delete-item-output', data);
+                } else {
+                    displayOutput('delete-item-output', data, true);
+                }
+            } catch (error) {
+                displayOutput('delete-item-output', {error: error.message}, true);
+            }
+        }
+
+        async function cancelOrder() {
+            try {
+                const orderId = document.getElementById('cancel-order-id').value;
+                if (!confirm(`Are you sure you want to cancel order #${orderId}?`)) {
+                    return;
+                }
+                const response = await fetch(`${API_BASE}/orders/${orderId}`, {
+                    method: 'DELETE'
+                });
+                const data = await response.json();
+                if (response.ok) {
+                    displayOutput('cancel-order-output', data);
+                } else {
+                    displayOutput('cancel-order-output', data, true);
+                }
+            } catch (error) {
+                displayOutput('cancel-order-output', {error: error.message}, true);
+            }
+        }
+
+        async function getAnalytics() {
+            try {
+                const response = await fetch(`${API_BASE}/analytics/dashboard`);
+                const data = await response.json();
+                displayOutput('analytics-output', data);
+            } catch (error) {
+                displayOutput('analytics-output', {error: error.message}, true);
+            }
+        }
+    </script>
+</body>
+</html>

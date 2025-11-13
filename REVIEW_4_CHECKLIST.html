@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Review 4 - Final Project Evaluation Checklist</title>
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .container {
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        h1 {
+            color: #667eea;
+            text-align: center;
+            font-size: 36px;
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 40px;
+            font-size: 18px;
+        }
+        .section {
+            border: 3px solid #667eea;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 30px;
+            background: #f8f9ff;
+        }
+        .section-title {
+            font-size: 24px;
+            color: #667eea;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+        }
+        .section-icon {
+            font-size: 32px;
+            margin-right: 15px;
+        }
+        .checklist {
+            list-style: none;
+            padding: 0;
+        }
+        .checklist-item {
+            padding: 15px;
+            margin: 10px 0;
+            background: white;
+            border-radius: 8px;
+            border-left: 5px solid #ddd;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: flex-start;
+        }
+        .checklist-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .checklist-item.checked {
+            border-left-color: #4CAF50;
+            background: #f1f8f4;
+        }
+        .checkbox {
+            font-size: 28px;
+            margin-right: 15px;
+            flex-shrink: 0;
+            width: 30px;
+        }
+        .checklist-item.checked .checkbox {
+            color: #4CAF50;
+        }
+        .item-content {
+            flex-grow: 1;
+        }
+        .item-title {
+            font-weight: bold;
+            font-size: 16px;
+            margin-bottom: 5px;
+            color: #333;
+        }
+        .item-detail {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+        .item-demo {
+            background: #fff3cd;
+            padding: 8px 12px;
+            border-radius: 5px;
+            margin-top: 8px;
+            font-size: 13px;
+            border-left: 3px solid #ffc107;
+        }
+        .progress-section {
+            text-align: center;
+            margin: 30px 0;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+        .progress-bar {
+            background: #e0e0e0;
+            height: 40px;
+            border-radius: 20px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+        .progress-fill {
+            background: linear-gradient(90deg, #4CAF50, #45a049);
+            height: 100%;
+            transition: width 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 18px;
+        }
+        .score {
+            font-size: 48px;
+            font-weight: bold;
+            color: #4CAF50;
+            margin: 10px 0;
+        }
+        .quick-demo {
+            background: #d1ecf1;
+            border: 2px solid #17a2b8;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 30px 0;
+        }
+        .quick-demo h3 {
+            color: #17a2b8;
+            margin-top: 0;
+        }
+        .demo-step {
+            padding: 10px;
+            margin: 8px 0;
+            background: white;
+            border-radius: 5px;
+            border-left: 4px solid #17a2b8;
+        }
+        .rubric-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        .rubric-table th {
+            background: #667eea;
+            color: white;
+            padding: 12px;
+            text-align: left;
+        }
+        .rubric-table td {
+            padding: 12px;
+            border: 1px solid #ddd;
+        }
+        .rubric-table tr:hover {
+            background: #f5f5f5;
+        }
+        .marks {
+            font-weight: bold;
+            color: #4CAF50;
+            font-size: 18px;
+        }
+        button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            margin: 10px;
+            transition: all 0.3s;
+        }
+        button:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Review 4 - Final Evaluation</h1>
+        <p class="subtitle">Check off each item as you demonstrate it to your professor</p>
+
+        <!-- PROGRESS -->
+        <div class="progress-section">
+            <div>Items Completed</div>
+            <div class="score"><span id="completed">0</span> / <span id="total">20</span></div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressBar">0%</div>
+            </div>
+        </div>
+
+        <!-- QUICK 5-MINUTE DEMO PATH -->
+        <div class="quick-demo">
+            <h3>Quick 5-Minute Demo Path (If Short on Time)</h3>
+            <div class="demo-step"><strong>1.</strong> Open frontend (localhost:3001) → Browse & place order (30 sec)</div>
+            <div class="demo-step"><strong>2.</strong> Open demo.html → Test trigger (GET restaurants, POST order, GET restaurants again - show count++) (1 min)</div>
+            <div class="demo-step"><strong>3.</strong> Demo CRUD in demo.html (CREATE user, UPDATE order status, DELETE menu item) (1.5 min)</div>
+            <div class="demo-step"><strong>4.</strong> Show schema.sql in VS Code → Point out 4 triggers (30 sec)</div>
+            <div class="demo-step"><strong>5.</strong> Show procedures_functions.sql → Point out procedures/functions/complex queries (1 min)</div>
+            <div class="demo-step"><strong>6.</strong> Run Analytics endpoint in demo.html (30 sec)</div>
+        </div>
+
+        <!-- SECTION 1: DATABASE DESIGN & IMPLEMENTATION -->
+        <div class="section">
+            <div class="section-title">
+                <span class="section-icon">DB</span>
+                Database Design & Implementation
+            </div>
+            
+            <ul class="checklist">
+                <li class="checklist-item" onclick="toggleCheck(this)">
+                    <span class="checkbox">[ ]</span>
+                    <div class="item-content">
+                        <div class="item-title">ER Diagram with all relationships</div>
+                        <div class="item-detail">5 entities: users, restaurants, menu_items, orders, order_items</div>
+                        <div class="item-demo">Show: docs/ER_Diagram.md (ASCII diagram section)</div>
+                    </div>
+                </li>
+
+                <li class="checklist-item" onclick="toggleCheck(this)">
+                    <span class="checkbox">[ ]</span>
+                    <div class="item-content">
+                        <div class="item-title">Database Schema (DDL) with all constraints</div>
+                        <div class="item-detail">PRIMARY KEY, FOREIGN KEY, CHECK, NOT NULL, UNIQUE, DEFAULT constraints</div>
+                        <div class="item-demo">Show: sql/schema.sql (scroll through tables)</div>
+                    </div>
+                </li>
+
+                <li class="checklist-item" onclick="toggleCheck(this)">
+                    <span class="checkbox">[ ]</span>
+                    <div class="item-content">
+                        <div class="item-title">Database is populated with test data</div>
+                        <div class="item-detail">2 users, 2 restaurants, 8 menu items inserted</div>
+                        <div class="item-demo">Show: sql/seed_data.sql OR run GET /api/restaurants in demo.html</div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <!-- SECTION 2: TRIGGERS -->
+        <div class="section">
+            <div class="section-title">
+                <span class="section-icon">AUTO</span>
+                Triggers (Automatic Database Actions)
+            </div>
+            
+            <ul class="checklist">
+                <li class="checklist-item" onclick="toggleCheck(this)">
+                    <span class="checkbox">[ ]</span>
+                    <div class="item-content">
+                        <div class="item-title">Trigger 1: increment_order_count (DEMONSTRATED LIVE)</div>
+                        <div class="item-detail">Auto-increments restaurant order_count when order is placed</div>
+                        <div class="item-demo">DEMO: In demo.html → GET restaurants (note count) → POST order → GET restaurants (count increased!)</div>
+                    </div>
+                </li>
+
+                <li class="checklist-item" onclick="toggleCheck(this)">
+                    <span class="checkbox">[ ]</span>
+                    <div class="item-content">
+                        <div class="item-title">Trigger 2: prevent_restaurant_delete</div>
+                        <div class="item-detail">Prevents deleting restaurants with active orders (data integrity)</div>
+                        <div class="item-demo">Show code in: sql/schema.sql (line ~52)</div>
+                    </div>
+                </li>
+
+                <li class="checklist-item" onclick="toggleCheck(this)">
+                    <span class="checkbox">[ ]</span>
+                    <div class="item-content">
+                        <div class="item-title">Trigger 3: update_order_total</div>
+                        <div class="item-detail">Auto-calculates order total when items are added</div>
+                        <div class="item-demo">Show code in: sql/schema.sql (line ~61)</div>
+                    </div>
+                </li>
+
+                <li class="checklist-item" onclick="toggleCheck(this)">
+                    <span class="checkbox">[ ]</span>
+                    <div class="item-content">
+                        <div class="item-title">Trigger 4: log_order_status_change</div>
+                        <div class="item-detail">Creates audit log when order status changes (includes log table creation)</div>
+                        <div class="item-demo">Show code in: sql/schema.sql (line ~70-82)</div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <!-- SECTION 3: CRUD OPERATIONS -->
+        <div class="section">
+            <div class="section-title">
+                <span class="section-icon">CRUD</span>
+                CRUD Operations (Create, Read, Update, Delete)
+            </div>
+            
+            <ul class="checklist">
+                <li class="checklist-item" onclick="toggleCheck(this)">
+                    <span class="checkbox">[ ]</span>
+                    <div class="item-content">
+                        <div class="item-title">CREATE - Add new data to database</div>
+                        <div class="item-detail">Register user (POST /api/register), Place order (POST /api/orders)</div>
+                        <div class="item-demo">DEMO: In demo.html → POST /api/register → Change email → Test → User created!</div>
+                    </div>
+                </li>
+
+                <li class="checklist-item" onclick="toggleCheck(this)">
+                    <span class="checkbox">[ ]</span>
+                    <div class="item-content">
+                        <div class="item-title">READ - Retrieve data from database</div>
+                        <div class="item-detail">Get restaurants (GET /api/restaurants), Get menu (GET /api/menu/:id)</div>
+                        <div class="item-demo">DEMO: In demo.html → GET /api/restaurants → Test → Data displayed</div>
+                    </div>
+                </li>
+
+                <li class="checklist-item" onclick="toggleCheck(this)">
+                    <span class="checkbox">[ ]</span>
+                    <div class="item-content">
+                        <div class="item-title">UPDATE - Modify existing data</div>
+                        <div class="item-detail">Change order status (PUT /api/orders/:id/status)</div>
+                        <div class="item-demo">DEMO: In demo.html → PUT /api/orders/1/status → Change to "delivered" → Test → Updated!</div>
+                    </div>
+                </li>
+
+                <li class="checklist-item" onclick="toggleCheck(this)">
+                    <span class="checkbox">[ ]</span>
+                    <div class="item-content">
+                        <div class="item-title">DELETE - Remove data from database</div>
+                        <div class="item-detail">Delete menu item (DELETE /api/menu/:id)</div>
+                        <div class="item-demo">DEMO: In demo.html → DELETE /api/menu/4 → Confirm → Deleted successfully</div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <!-- SECTION 4: PROCEDURES & FUNCTIONS -->
+        <div class="section">
+            <div class="section-title">
+                <span class="section-icon">PROC</span>
+                Stored Procedures & Functions
+            </div>
+            
+            <ul class="checklist">
+                <li class="checklist-item" onclick="toggleCheck(this)">
+                    <span class="checkbox">[ ]</span>
+                    <div class="item-content">
+                        <div class="item-title">4 Stored Procedures documented</div>
+                        <div class="item-detail">Calculate Revenue, Top Items, Update Status, Order History</div>
+                        <div class="item-demo">Show: sql/procedures_functions.sql (PROCEDURE 1-4 sections)</div>
+                    </div>
+                </li>
+
+                <li class="checklist-item" onclick="toggleCheck(this)">
+                    <span class="checkbox">[ ]</span>
+                    <div class="item-content">
+                        <div class="item-title">4 Functions documented</div>
+                        <div class="item-detail">Lifetime Value, Available Items, Item Count, Restaurant Check</div>
+                        <div class="item-demo">Show: sql/procedures_functions.sql (FUNCTION 1-4 sections)</div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <!-- SECTION 5: COMPLEX QUERIES -->
+        <div class="section">
+            <div class="section-title">
+                <span class="section-icon">ANALYTICS</span>
+                Complex Queries & Analytics
+            </div>
+            
+            <ul class="checklist">
+                <li class="checklist-item" onclick="toggleCheck(this)">
+                    <span class="checkbox">[ ]</span>
+                    <div class="item-content">
+                        <div class="item-title">Complex Query 1: Restaurant Performance Dashboard</div>
+                        <div class="item-detail">Multi-table JOIN, GROUP BY, aggregations (SUM, COUNT, AVG), subqueries</div>
+                        <div class="item-demo">Show: sql/procedures_functions.sql (line ~155) AND RUN: GET /api/analytics/dashboard in demo.html</div>
+                    </div>
+                </li>
+
+                <li class="checklist-item" onclick="toggleCheck(this)">
+                    <span class="checkbox">☐</span>
+                    <div class="item-content">
+                        <div class="item-title">✓ Complex Query 2: Daily Sales Report</div>
+                        <div class="item-detail">Date grouping, CASE statements, conditional aggregation</div>
+                        <div class="item-demo">📂 Show: sql/procedures_functions.sql (line ~178)</div>
+                    </div>
+                </li>
+
+                <li class="checklist-item" onclick="toggleCheck(this)">
+                    <span class="checkbox">☐</span>
+                    <div class="item-content">
+                        <div class="item-title">✓ Complex Query 3: Customer Segmentation</div>
+                        <div class="item-detail">Nested queries (subquery in FROM clause), CASE-based segmentation</div>
+                        <div class="item-demo">📂 Show: sql/procedures_functions.sql (line ~195)</div>
+                    </div>
+                </li>
+
+                <li class="checklist-item" onclick="toggleCheck(this)">
+                    <span class="checkbox">☐</span>
+                    <div class="item-content">
+                        <div class="item-title">✓ Complex Query 4: Market Basket Analysis</div>
+                        <div class="item-detail">Self-join, HAVING clause, co-occurrence analysis</div>
+                        <div class="item-demo">📂 Show: sql/procedures_functions.sql (line ~220)</div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <!-- SECTION 6: APPLICATION -->
+        <div class="section">
+            <div class="section-title">
+                <span class="section-icon">💻</span>
+                Complete Working Application
+            </div>
+            
+            <ul class="checklist">
+                <li class="checklist-item" onclick="toggleCheck(this)">
+                    <span class="checkbox">☐</span>
+                    <div class="item-content">
+                        <div class="item-title">✓ Backend API is functional (10 endpoints)</div>
+                        <div class="item-detail">Flask REST API with error handling, validation, proper HTTP codes</div>
+                        <div class="item-demo">📂 Show: backend/app.py (scroll through endpoints) OR use demo.html to test any endpoint</div>
+                    </div>
+                </li>
+
+                <li class="checklist-item" onclick="toggleCheck(this)">
+                    <span class="checkbox">☐</span>
+                    <div class="item-content">
+                        <div class="item-title">✓ Frontend application works (React)</div>
+                        <div class="item-detail">Browse restaurants, view menus, cart, checkout functionality</div>
+                        <div class="item-demo">🎬 DEMO: Open localhost:3001 → Browse → Add to cart → Checkout → Show success</div>
+                    </div>
+                </li>
+
+                <li class="checklist-item" onclick="toggleCheck(this)">
+                    <span class="checkbox">☐</span>
+                    <div class="item-content">
+                        <div class="item-title">✓ Database integration works correctly</div>
+                        <div class="item-detail">Data flows between frontend → backend → database correctly</div>
+                        <div class="item-demo">🎬 DEMO: Place order on frontend → Check in demo.html that order appears in GET /api/orders/1</div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <!-- SECTION 7: DOCUMENTATION -->
+        <div class="section">
+            <div class="section-title">
+                <span class="section-icon">📚</span>
+                Documentation & Requirements
+            </div>
+            
+            <ul class="checklist">
+                <li class="checklist-item" onclick="toggleCheck(this)">
+                    <span class="checkbox">☐</span>
+                    <div class="item-content">
+                        <div class="item-title">✓ User Requirement Specification is complete</div>
+                        <div class="item-detail">Purpose, scope, 9 functional requirements, 4 non-functional requirements</div>
+                        <div class="item-demo">📂 Show: docs/User_Requirement_Spec.md</div>
+                    </div>
+                </li>
+
+                <li class="checklist-item" onclick="toggleCheck(this)">
+                    <span class="checkbox">☐</span>
+                    <div class="item-content">
+                        <div class="item-title">✓ README with setup instructions</div>
+                        <div class="item-detail">Complete installation and run steps, troubleshooting</div>
+                        <div class="item-demo">📂 Show: README.md</div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <!-- RUBRIC -->
+        <div class="section">
+            <div class="section-title">
+                <span class="section-icon">📊</span>
+                Grading Rubric (10 Marks)
+            </div>
+            
+            <table class="rubric-table">
+                <thead>
+                    <tr>
+                        <th>Component</th>
+                        <th>What to Show</th>
+                        <th>Marks</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Database Design</strong></td>
+                        <td>ER Diagram + Schema with constraints</td>
+                        <td class="marks">2</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Triggers</strong></td>
+                        <td>Show code + LIVE demo of trigger 1</td>
+                        <td class="marks">2</td>
+                    </tr>
+                    <tr>
+                        <td><strong>CRUD Operations</strong></td>
+                        <td>Demo all 4 operations in demo.html</td>
+                        <td class="marks">2</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Procedures/Functions/Queries</strong></td>
+                        <td>Show code + run analytics</td>
+                        <td class="marks">2</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Working Application</strong></td>
+                        <td>Frontend demo + backend integration</td>
+                        <td class="marks">1</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Documentation</strong></td>
+                        <td>Requirements + README</td>
+                        <td class="marks">1</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- ACTION BUTTONS -->
+        <div style="text-align: center; margin-top: 40px;">
+            <button onclick="window.open('demo.html', '_blank')">🚀 Open Demo Testing Page</button>
+            <button onclick="window.open('http://localhost:3001', '_blank')">🌐 Open Frontend App</button>
+            <button onclick="resetAll()">↻ Reset Checklist</button>
+        </div>
+
+    </div>
+
+    <script>
+        let totalItems = 0;
+        let completedItems = 0;
+
+        // Count total checklist items
+        document.addEventListener('DOMContentLoaded', function() {
+            totalItems = document.querySelectorAll('.checklist-item').length;
+            document.getElementById('total').textContent = totalItems;
+        });
+
+        function toggleCheck(item) {
+            item.classList.toggle('checked');
+            
+            // Update checkbox symbol
+            const checkbox = item.querySelector('.checkbox');
+            if (item.classList.contains('checked')) {
+                checkbox.textContent = '✓';
+            } else {
+                checkbox.textContent = '☐';
+            }
+            
+            updateProgress();
+        }
+
+        function updateProgress() {
+            completedItems = document.querySelectorAll('.checklist-item.checked').length;
+            document.getElementById('completed').textContent = completedItems;
+            
+            const percentage = (completedItems / totalItems) * 100;
+            const progressBar = document.getElementById('progressBar');
+            progressBar.style.width = percentage + '%';
+            progressBar.textContent = Math.round(percentage) + '%';
+            
+            if (completedItems === totalItems) {
+                progressBar.textContent = '🎉 100% Complete!';
+                progressBar.style.background = 'linear-gradient(90deg, #4CAF50, #45a049)';
+            }
+        }
+
+        function resetAll() {
+            document.querySelectorAll('.checklist-item').forEach(item => {
+                item.classList.remove('checked');
+                item.querySelector('.checkbox').textContent = '☐';
+            });
+            updateProgress();
+        }
+    </script>
+</body>
+</html>
